@@ -1,6 +1,7 @@
 # Mermaid 실습
 - 순서도 실습
     - 첫번재 샘플
+    
 ```{mermaid}
 classDiagram
 direction LR
@@ -40,7 +41,6 @@ direction LR
     Person "0.. 1" --> "1" Address : lives at
     Person <|-- Student
     Person <|-- Professor
-
 ```
 
 
