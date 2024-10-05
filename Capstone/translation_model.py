@@ -547,6 +547,7 @@ def voca_note(sentence):
     meaning = ""
     temp = sentence
     words = temp.split()
+    
     #conn, cursor = voca_DBcheck()
 
     for word in words:
@@ -554,14 +555,14 @@ def voca_note(sentence):
         result = voca_cursor.fetchone()
 
         if result:
-            part_of_speech, meaning = result
+            part_of_speech = result[0]
+            meaning = result[1]
             print("단어 : " + word + ", " + "품사 : " + part_of_speech + ", " + "뜻 : " + meaning + " ")
             return word, part_of_speech, meaning
-        #else:
-            #word = "None"
-            #part_of_speech = "None"
-            #meaning = "None"
-            #return word, part_of_speech, meaning
+        else:
+            word = "None"
+            part_of_speech = "None"
+            meaning = "None"
 
 
 #word, part_of_speech, meaning = voca_note()
