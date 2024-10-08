@@ -456,7 +456,17 @@ def print_second():
         print(voca, part, mean)
         # gui에 자막 적기
         txtbox.insert(1.0, "{} - {}, 번역: {}".format(tt+1, "0"+str(time_set)[:-3], translated_text)+"\n\n")
-        vocabox.insert(tkinter.END, f"단어 : {voca:<15} 품사 : {part:<15} 뜻 : {mean}\n")
+
+        # gui에 단어 출력하기
+        try: #단어가 있을 경우 출력
+            voca, part, mean = voca_note(src_text)
+            vocabox.insert(1.0, f"단어 : {voca:<15} 품사 : {part:<15} 뜻 : {mean}\n")
+        except: #없을 경우 미출력
+            voca = "None"
+            part = "None"
+            mean = "None"
+            print(voca, part, mean)
+
         threading.Timer(1, print_second).start()             # x초 마다 반복
     else:
         conn.commit()
@@ -551,8 +561,11 @@ def voca_note(sentence):
     #conn, cursor = voca_DBcheck()
 
     for word in words:
-        voca_cursor.execute('SELECT part_of_speech, meaning FROM dict WHERE word = ?', (word,))
-        result = voca_cursor.fetchone()
+        try:
+            voca_cursor.execute('SELECT part_of_speech, meaning FROM dict WHERE word = ?', (word,))
+            result = voca_cursor.fetchone()
+        except:
+            continue
 
         if result:
             part_of_speech = result[0]
@@ -560,9 +573,7 @@ def voca_note(sentence):
             print("단어 : " + word + ", " + "품사 : " + part_of_speech + ", " + "뜻 : " + meaning + " ")
             return word, part_of_speech, meaning
         else:
-            word = "None"
-            part_of_speech = "None"
-            meaning = "None"
+            continue
 
 
 #word, part_of_speech, meaning = voca_note()
